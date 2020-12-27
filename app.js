@@ -2,7 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
+const mysql = require('mysql');
 const app = express();
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'db_nodejs'
+});
 
 const storage = multer.diskStorage({
   destination: (err, file, cb) => {
@@ -29,16 +37,21 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/add', (req, res) => {
+  res.render('add-img', {
+    title: 'Multer Upload - Add Image'
+  })
+});
+
 app.post('/', upload.single('upload_file'), (req, res) => {
   console.log(req.file, req.body);
   res.end();
 });
 
-app.get('/image', (req, res) => {
-  res.render('image', {
-    title: 'Multer Upload - Images'
-  })
-});
+db.connect((err) => {
+  if (err) throw err;
+  console.log('koneksi ke mysql');
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
