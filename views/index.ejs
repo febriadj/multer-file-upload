@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style.css">
   <title><%= title %></title>
 </head>
 <body>
+  <%- include ('./partials/nav.ejs'); %>
   <div id="content-img">
-    <% images.forEach( img => { %>
-      <div class="content-img-item">
-        <img src="/<%= img.img %>" alt="">
-        <p><%= img.deskripsi %></p>
-      </div>
-    <% }); %>
+    <div id="content-img-wrap">
+      <% images.map( img => { %>
+        <div class="content-img-item">
+          <img src="/<%= img.img %>" alt="">
+          <p><%= img.deskripsi %></p>
+        </div>
+      <% }); %>
+    </div>
   </div>
 </body>
 </html>

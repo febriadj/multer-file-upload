@@ -5,6 +5,7 @@ const multer = require('multer');
 const mysql = require('mysql');
 const app = express();
 
+// koneksi ke database mysql
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -12,6 +13,7 @@ const db = mysql.createConnection({
   database: 'db_nodejs'
 });
 
+// konfigurasi multer disk storage
 const storage = multer.diskStorage({
   destination: path.join(__dirname + '/public/uploads'),
   filename: (err, file, cb) => {
@@ -51,12 +53,17 @@ app.post('/add', (req, res) => {
   upload(req, res, err => {
     if (err) throw err;
 
+    // insert gambar ke database
     let sql = `INSERT INTO multer_uploads VALUES(0, '${req.file.filename}', '${req.body.deskripsi}')`;
     db.query(sql, (err, result) => {
       if (err) throw err;
       res.redirect('/');
     });
   });
+});
+
+app.use((req, res) => {
+  res.status(404).send('404');
 });
 
 db.connect((err) => {

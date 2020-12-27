@@ -6,10 +6,13 @@
   <title><%= title %></title>
 </head>
 <body>
-  <form action="/add" enctype="multipart/form-data" method="post" class="form">
-    <input type="file" name="img" id="file">
-    <input type="text" name="deskripsi" id="desc">
-    <button type="submit">Submit</button>
-  </form>
+  <%- include ('./partials/nav.ejs') %>
+  <div id="add-img">
+    <form action="/add" enctype="multipart/form-data" method="post" class="form">
+      <input type="file" name="img" id="file" class="input">
+      <input type="text" name="deskripsi" id="desc" placeholder="Deskripsi" class="input">
+      <button type="submit" class="input">Submit</button>
+    </form>
+  </div>
 </body>
 </html>
