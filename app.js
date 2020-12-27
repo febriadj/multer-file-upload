@@ -13,28 +13,32 @@ const db = mysql.createConnection({
 });
 
 const storage = multer.diskStorage({
-  destination: (err, file, cb) => {
-    cb(null, path.join(__dirname, '/public/uploads'));
-  },
+  destination: path.join(__dirname + '/public/uploads'),
   filename: (err, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).single('img');
 
 // set view engine ejs
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join('/public/uploads')));
+app.use(express.static(path.join(__dirname, '/public/uploads')));
+app.use(express.static(path.join(__dirname, '/public/css')));
 
 app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Multer Upload'
-  });
+  let sql = `SELECT * FROM multer_uploads`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.render('index', {
+      title: 'Multer Upload',
+      images: result
+    });
+  })
 });
 
 app.get('/add', (req, res) => {
@@ -43,9 +47,16 @@ app.get('/add', (req, res) => {
   })
 });
 
-app.post('/', upload.single('upload_file'), (req, res) => {
-  console.log(req.file, req.body);
-  res.end();
+app.post('/add', (req, res) => {
+  upload(req, res, err => {
+    if (err) throw err;
+
+    let sql = `INSERT INTO multer_uploads VALUES(0, '${req.file.filename}', '${req.body.deskripsi}')`;
+    db.query(sql, (err, result) => {
+      if (err) throw err;
+      res.redirect('/');
+    });
+  });
 });
 
 db.connect((err) => {

@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-size: 14px;
+  background-color: aqua;
+}
+
+#content-img {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+.content-img-item {
+  padding: 20px;
+  border: 1px solid #dddddd;
+}
+.content-img-item img {
+  width: 100%;
+}
