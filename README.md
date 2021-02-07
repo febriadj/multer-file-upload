@@ -1,2 +1,2 @@
 # Multer File Upload
-Mengupload, menyimpan dan menampilkan file gambar yang diunggah kedalam database mysql menggunakan Multer
+Membuat aplikasi web nodejs + mysql sederhana untuk mengupload file image menggunakan module multer
